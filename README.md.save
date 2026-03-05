@@ -1,4 +1,4 @@
-## DevOps CI/CD Pipeline com Docker, Terraform e AWS
+DevOps CI/CD Pipeline com Docker, Terraform e AWS
 
 📌 Sobre o Projeto
 
@@ -10,7 +10,7 @@ Este projeto demonstra uma pipeline completa de CI/CD (Continuous Integration e 
 
 O objetivo é demonstrar na prática como automatizar build, provisionamento de infraestrutura e deploy de uma aplicação web em ambiente cloud.
 
-# 🏗 Arquitetura do Projeto
+🏗 Arquitetura do Projeto
 
 Developer
                 │
@@ -43,7 +43,7 @@ Developer
             Web Application
 
 
-## ⚙️ Fluxo da Pipeline
+⚙️ Fluxo da Pipeline
 
 	1.	Desenvolvedor realiza push no GitHub
 	2.	GitHub Actions inicia automaticamente a pipeline
@@ -53,8 +53,7 @@ Developer
 	6.	Docker executa o container da aplicação
 	7.	A aplicação fica disponível via IP público da EC2
 
-🧰
-##  Tecnologias Utilizadas
+🧰 Tecnologias Utilizadas
 
 	•	Docker
 	•	Terraform
@@ -64,7 +63,7 @@ Developer
 	•	Linux
 	•	Git
 
-##📂 Estrutura do Projeto
+📂 Estrutura do Projeto
 
 devops-cicd-docker-aws
 │
@@ -84,56 +83,12 @@ devops-cicd-docker-aws
 │
 └── README.md
 
-
-## 🚀 Como executar o projeto localmente
+🚀 Como executar o projeto localmente
 
 Clone o repositório: git clone https://github.com/SantRhay/devops-cicd-docker-aws.git
 
-Entre na pasta do projeto: 
+Entre na pasta do projeto:
 cd devops-cicd-docker-aws
 
 Build da imagem Docker:
 docker build -t devops-cicd .
-
-Executar container:
-docker run -d -p 80:80 devops-cicd
-
-Acesse no navegador
-http://localhost
-
-## ☁ ️ Deploy na AWS
-
-O deploy é realizado automaticamente através da pipeline configurada no GitHub Actions.
-
-A infraestrutura é provisionada utilizando Terraform e uma instância EC2 é criada para hospedar o container da aplicação.
-
-## 🌐 Acesso à Aplicação
-
-Após o deploy, a aplicação pode ser acessada via navegador utilizando o IP público da instância EC2.
-
-Exemplo: http://44.192.76.77
-
-## 🎯 Objetivos do Projeto
-
-Este projeto foi desenvolvido com o objetivo de praticar e demonstrar conhecimentos em:
-	•	CI/CD
-	•	Infraestrutura como código
-	•	Containerização
-	•	Automação de deploy
-	•	Cloud computing
-
-## 📈 Possíveis Melhorias Futuras
-
-	•	Implementação de Load Balancer
-	•	Auto Scaling Group
-	•	Monitoramento com Prometheus e Grafana
-	•	Deploy utilizando Kubernetes
-	•	Pipeline multi-ambiente (Dev / Staging / Production)
-
-## 👩‍💻 Autor
-
-Projeto desenvolvido por Ray Santana como parte do aprendizado em DevOps e Cloud Computing.
-
-GitHub:
-https://github.com/SantRhay
-:::
