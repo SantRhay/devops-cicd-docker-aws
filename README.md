@@ -21,4 +21,4 @@ Linux
 
 Aplicação rodando em:
 
-http://SEU_IP_PUBLICO
+http://32.192.254.167/
