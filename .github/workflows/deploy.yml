@@ -1,4 +1,4 @@
-name: Deploy DevOps CI/CD
+name: Deploy DevOps Pipeline
 
 on:
   push:
@@ -6,19 +6,43 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
 
-    - name: Checkout código
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Build Docker Image
-      run: docker build -t devops-cicd .
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+        aws-region: us-east-1
 
-    - name: Deploy container
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build Docker image
       run: |
-        docker stop devops-cicd || true
-        docker rm devops-cicd || true
-        docker run -d -p 80:80 --name devops-cicd devops-cicd
+        docker build -t devops-cicd-app .
+
+    - name: Tag Docker image
+      run: |
+        docker tag devops-cicd-app:latest 811936460688.dkr.ecr.us-east-1.amazonaws.com/devops-cicd-app:latest
+
+    - name: Push Docker image
+      run: |
+        docker push 811936460688.dkr.ecr.us-east-1.amazonaws.com/devops-cicd-app:latest
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: 32.192.254.167
+        username: ec2-user
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd devops-cicd-docker-aws
+          ./deploy.sh
