@@ -1,139 +1,175 @@
-## DevOps CI/CD Pipeline com Docker, Terraform e AWS
+# 🚀 DevOps CI/CD Pipeline com Docker, GitHub Actions e AWS
 
-📌 Sobre o Projeto
+Projeto demonstrando um pipeline completo de *CI/CD (Continuous Integration e Continuous Deployment)* utilizando Docker, GitHub Actions e AWS.
 
-Este projeto demonstra uma pipeline completa de CI/CD (Continuous Integration e Continuous Deployment) utilizando:
-	•	Docker para containerização
-	•	Terraform para infraestrutura como código
-	•	GitHub Actions para automação de pipeline
-	•	AWS EC2 para deploy da aplicação
+Este projeto automatiza o processo de *build, armazenamento e deploy de uma aplicação containerizada*.
 
-O objetivo é demonstrar na prática como automatizar build, provisionamento de infraestrutura e deploy de uma aplicação web em ambiente cloud.
+---
 
-# 🏗 Arquitetura do Projeto
+# 📌 Arquitetura do Projeto
 
-Developer
-                │
-                │ git push
-                ▼
-        GitHub Repository
-                │
-                │ Trigger Pipeline
-                ▼
-        GitHub Actions (CI/CD)
-                │
-                │ Build Docker Image
-                ▼
-            Docker
-                │
-                │ Provision Infrastructure
-                ▼
-           Terraform
-                │
-                │ Deploy Infrastructure
-                ▼
-           AWS EC2 Instance
-                │
-                │ Run Container
-                ▼
-        Docker Container (Nginx)
-                │
-                │ HTTP Request
-                ▼
-            Web Application
+O fluxo da aplicação funciona da seguinte forma:
+
+Developer → GitHub → GitHub Actions → Docker Build → AWS ECR → AWS EC2 → Container em execução
+
+---
+
+# 🏗 Arquitetura
 
 
-## ⚙️ Fluxo da Pipeline
+                +-------------+
+                |  Developer  |
+                +-------------+
+                        |
+                        v
+                +-------------+
+                |   GitHub    |
+                +-------------+
+                        |
+                        v
+            +-----------------------+
+            |   GitHub Actions CI   |
+            +-----------------------+
+              |               |
+              v               v
+      Build Docker      Test Pipeline
+              |
+              v
+        Push Image
+              |
+              v
+        +-----------+
+        | AWS ECR   |
+        +-----------+
+              |
+              v
+        +-----------+
+        | AWS EC2   |
+        +-----------+
+              |
+              v
+        Docker Container
 
-	1.	Desenvolvedor realiza push no GitHub
-	2.	GitHub Actions inicia automaticamente a pipeline
-	3.	A pipeline executa build da imagem Docker
-	4.	Terraform provisiona a infraestrutura na AWS
-	5.	A instância EC2 é criada ou atualizada
-	6.	Docker executa o container da aplicação
-	7.	A aplicação fica disponível via IP público da EC2
 
-🧰
-##  Tecnologias Utilizadas
+---
 
-	•	Docker
-	•	Terraform
-	•	GitHub Actions
-	•	AWS EC2
-	•	Nginx
-	•	Linux
-	•	Git
+# ⚙️ Tecnologias Utilizadas
 
-##📂 Estrutura do Projeto
+- Docker
+- GitHub Actions
+- AWS EC2
+- AWS ECR
+- Nginx
+- Linux
+- Bash
+
+---
+
+# 📂 Estrutura do Projeto
+
 
 devops-cicd-docker-aws
 │
-├── aplicativo
+├── app/
 │   └── index.html
 │
-├── Dockerfile
+├── docker/
+│   └── Dockerfile
 │
-├── terraform
-│   └── main.tf
+├── scripts/
+│   └── deploy.sh
 │
-├── .github
-│   └── workflows
-│       └── deploy.yml
+├── docs/
+│   └── architecture.md
 │
-├── deploy.sh
+├── .github/
+│   └── workflows/
+│       └── pipeline.yml
 │
 └── README.md
 
 
-## 🚀 Como executar o projeto localmente
+---
 
-Clone o repositório: git clone https://github.com/SantRhay/devops-cicd-docker-aws.git
+# 🔄 Pipeline CI/CD
 
-Entre na pasta do projeto: 
-cd devops-cicd-docker-aws
+O pipeline executa automaticamente quando há push no repositório.
 
-Build da imagem Docker:
-docker build -t devops-cicd .
+Etapas do pipeline:
 
-Executar container:
-docker run -d -p 80:80 devops-cicd
+1️⃣ Checkout do código  
+2️⃣ Build da imagem Docker  
+3️⃣ Login no Amazon ECR  
+4️⃣ Push da imagem para o ECR  
+5️⃣ Deploy automático na EC2  
 
-Acesse no navegador
-http://localhost
+---
 
-## ☁ ️ Deploy na AWS
+# 🐳 Build da Imagem Docker
 
-O deploy é realizado automaticamente através da pipeline configurada no GitHub Actions.
 
-A infraestrutura é provisionada utilizando Terraform e uma instância EC2 é criada para hospedar o container da aplicação.
+docker build -t devops-cicd-app .
 
-## 🌐 Acesso à Aplicação
 
-Após o deploy, a aplicação pode ser acessada via navegador utilizando o IP público da instância EC2.
+---
 
-Exemplo: http://44.192.76.77
+# ☁️ Push para o Amazon ECR
 
-## 🎯 Objetivos do Projeto
 
-Este projeto foi desenvolvido com o objetivo de praticar e demonstrar conhecimentos em:
-	•	CI/CD
-	•	Infraestrutura como código
-	•	Containerização
-	•	Automação de deploy
-	•	Cloud computing
+docker push <ECR_REPOSITORY>
 
-## 📈 Possíveis Melhorias Futuras
 
-	•	Implementação de Load Balancer
-	•	Auto Scaling Group
-	•	Monitoramento com Prometheus e Grafana
-	•	Deploy utilizando Kubernetes
-	•	Pipeline multi-ambiente (Dev / Staging / Production)
+---
 
-## 👩‍💻 Autor
+# 🚀 Deploy na EC2
 
-Projeto desenvolvido por Ray Santana como parte do aprendizado em DevOps e Cloud Computing.
+O deploy é feito utilizando o script:
 
-GitHub:
-https://github.com/SantRhay
-:::
+
+scripts/deploy.sh
+
+
+O script executa:
+
+- Pull da imagem mais recente
+- Parada do container antigo
+- Remoção do container antigo
+- Criação de novo container
+
+---
+
+# 🌐 Acesso à aplicação
+
+Após o deploy, a aplicação pode ser acessada via:
+
+
+http://32.192.254.167
+
+
+---
+
+# 📊 Objetivo do Projeto
+
+Demonstrar na prática:
+
+- Implementação de pipeline CI/CD
+- Deploy automatizado
+- Containerização com Docker
+- Integração com AWS
+- Infraestrutura moderna baseada em containers
+
+---
+
+# 🎯 Próximas melhorias
+
+- Terraform para provisionamento da infraestrutura
+- Monitoramento com Prometheus e Grafana
+- Deploy Blue/Green
+- Kubernetes deployment
+
+---
+
+# 💻 Autora
+- Rayane Santana
+
+Projeto desenvolvido para estudo e portfólio DevOps.

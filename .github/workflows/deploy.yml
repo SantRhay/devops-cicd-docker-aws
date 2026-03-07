@@ -32,3 +32,13 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{ steps.login-ecr.outputs.registry }}/devops-cicd-app:latest
+	
+	- name: Deploy to EC2
+ 	 uses: appleboy/ssh-action@v0.1.6
+ 	 with:
+    	    host: 32.192.254.167
+            username: ec2-user
+            key: ${{ secrets.EC2_SSH_KEY }}
+            script: |
+              cd devops-cicd-docker-aws
+              ./deploy.sh
